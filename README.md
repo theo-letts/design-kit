@@ -129,9 +129,37 @@ every component, so without it every change to `ui.tsx` is stranded in this repo
 ships the files whole: `ui.tsx` is one 2,300-line module, and splitting it is worth doing
 for its own sake rather than as a prerequisite for shipping it.
 
-**Publishing is the one step that is yours.** Add a git remote, or `npm publish`, and
-host `kit/registry/*.json` somewhere stable. Nothing propagates until that exists — every
-consumer today holds a snapshot with no way back to you.
+### Publishing
+
+Everything is ready except the two things that need your accounts. In order:
+
+```bash
+git remote add origin git@github.com:<you>/design-kit.git
+git push -u origin main
+```
+
+Then replace `REPLACE-ME` in `package.json` and in `scripts/kit.mjs` with your owner
+name, and run `npm run kit` so the published package carries the right repository URL.
+
+`kit/` is committed on purpose, which is unusual for generated output and is what makes
+the registry route work without hosting anything: the files are served straight from the
+repository.
+
+```
+https://raw.githubusercontent.com/<you>/design-kit/main/kit/registry/green-3.json
+```
+
+Committed output goes stale, so CI regenerates it and fails on a diff.
+
+For npm, the package is `kit/`, not this repository — this one is the tool:
+
+```bash
+npm run release     # regenerates, then publishes from kit/
+```
+
+Bump `src/lib/version.ts` first, and add the entry to `CHANGELOG.md`. Nothing propagates
+to any product until one of these exists; every consumer today holds a snapshot with no
+way back to you.
 
 ## How a reference is read
 

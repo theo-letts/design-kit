@@ -1,7 +1,15 @@
 {
   "name": "design-kit",
-  "private": true,
   "version": "0.1.0",
+  "private": true,
+  "description": "A theming kit for Tailwind v4 and shadcn/ui: tokens on separate axes, four products, and an exportable design kit.",
+  "license": "MIT",
+  "author": "Theo Letts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/REPLACE-ME/design-kit.git"
+  },
+  "homepage": "https://github.com/REPLACE-ME/design-kit#readme",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,6 +21,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "kit": "node scripts/kit.mjs",
+    "release": "npm run kit && cd kit && npm publish --access public",
     "film": "node scripts/film.mjs",
     "film:update": "node scripts/film.mjs --update",
     "film:kits": "node scripts/film.mjs --kits",

@@ -110,6 +110,17 @@ do. If it does not, those rules match nothing: you get the colours, type scale a
 radii, and none of the stroke, case or motion treatments. Do not invent markup to make
 them match — say so instead.
 
+## What this does not carry
+
+Components. CSS cannot carry a sliding tab indicator, a panel that opens at its own
+height, or a table that scrolls, and a shadcn project owns its copy of every component —
+so those stay where they are unless someone copies them across.
+
+If this project has no shadcn components, or you want the ones this kit was drawn
+against, ask for \`kit/registry/${kit.id}-components.json\` from the design-kit repo. It
+carries \`ui.tsx\`, \`icons.tsx\` and \`utils.ts\` whole, with their npm dependencies
+listed. Do not try to reconstruct them from this stylesheet.
+
 ${effects.length ? `## Effects worth knowing\n\n${effects.map((e) => `- ${e}`).join("\n")}\n` : ""}
 ## Type
 

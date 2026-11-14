@@ -2,9 +2,10 @@ node_modules
 dist
 .DS_Store
 
-# Generated. `npm run kit` rebuilds it, and the version inside package.json
-# is carried across runs, so the folder is output rather than source.
-kit
+# kit/ is generated but committed on purpose: the registry route serves
+# those JSON files straight from the repository, so a URL to them has to
+# exist. CI regenerates and fails on a diff, which is what keeps committed
+# output from going stale.
 
 # The gate's working files. Baselines are committed; what a run produced and
 # what it diffed are not — they are rewritten every time.

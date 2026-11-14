@@ -24,6 +24,18 @@ jobs:
       # not built in CI is a build output that stops building.
       - run: npm run build
 
+      # kit/ is generated output that is committed, because the registry
+      # route serves it from the repository. Committed output rots unless
+      # something checks it, so: regenerate and fail on a diff.
+      - name: The published kit matches its source
+        run: |
+          npx playwright install --with-deps chromium
+          npm run dev &
+          npx wait-on http://localhost:5173 -t 60000
+          npm run kit
+          git diff --exit-code -- kit \
+            || (echo "kit/ is stale — run npm run kit and commit the result" && exit 1)
+
   # Kept separate because it needs a browser and takes minutes, and because
   # it is the job most likely to fail for a reason that is not your change:
   # it compares pixels at zero tolerance while fonts arrive over a network.

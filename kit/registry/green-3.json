@@ -1,0 +1,220 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "green-3",
+  "type": "registry:theme",
+  "title": "Green 3",
+  "description": "The house kit. Sea green on warm paper, set lower case in Geist Serif.",
+  "version": "0.2.0",
+  "registryDependencies": [
+    "./green-3-components.json"
+  ],
+  "cssVars": {
+    "theme": {
+      "radius": "0.875rem",
+      "spacing": "0.3rem",
+      "font-sans": "\"Geist\", ui-sans-serif, system-ui, sans-serif",
+      "font-heading": "\"Geist Serif\", ui-serif, Georgia, serif",
+      "font-mono": "\"Paper Mono\", ui-monospace, SFMono-Regular, Menlo, monospace",
+      "text-xs": "0.76rem",
+      "text-xs--line-height": "1.5",
+      "text-sm": "0.911rem",
+      "text-sm--line-height": "1.5",
+      "text-base": "1.094rem",
+      "text-base--line-height": "1.5",
+      "text-lg": "1.313rem",
+      "text-lg--line-height": "1.5",
+      "text-xl": "1.575rem",
+      "text-xl--line-height": "1.2",
+      "text-2xl": "1.89rem",
+      "text-2xl--line-height": "1.2",
+      "text-3xl": "2.268rem",
+      "text-3xl--line-height": "1.2",
+      "text-4xl": "2.722rem",
+      "text-4xl--line-height": "1.2"
+    },
+    "light": {
+      "background": "oklch(0.993 0.0055 45)",
+      "foreground": "oklch(0.145 0.0198 45)",
+      "card": "oklch(1 0.0055 45)",
+      "card-foreground": "oklch(0.145 0.0198 45)",
+      "popover": "oklch(1 0.0055 45)",
+      "popover-foreground": "oklch(0.145 0.0198 45)",
+      "primary": "oklch(0.5309 0.1112 146.93)",
+      "primary-foreground": "oklch(0.985 0.012 146.93)",
+      "secondary": "oklch(0.9464 0.0063 45)",
+      "secondary-foreground": "oklch(0.145 0.0198 45)",
+      "muted": "oklch(0.9464 0.0063 45)",
+      "muted-foreground": "oklch(0.5012 0.0138 45)",
+      "accent": "oklch(0.9717 0.0085 56.41)",
+      "accent-foreground": "oklch(0.205 0.0085 56.41)",
+      "destructive": "oklch(0.6548 0.2029 32.23)",
+      "destructive-foreground": "oklch(0.205 0.024 32.23)",
+      "success": "oklch(0.6548 0.16 148)",
+      "success-foreground": "oklch(0.205 0.024 148)",
+      "warning": "oklch(0.82 0.16 78)",
+      "warning-foreground": "oklch(0.205 0.024 78)",
+      "info": "oklch(0.6548 0.19 248)",
+      "info-foreground": "oklch(0.205 0.024 248)",
+      "border": "oklch(0.8955 0.0071 45)",
+      "input": "oklch(0.6555 0.0071 45)",
+      "ring": "oklch(0.5309 0.1112 146.93)",
+      "chart-1": "oklch(0.78 0.012 146.93)",
+      "chart-2": "oklch(0.66 0.012 146.93)",
+      "chart-3": "oklch(0.54 0.012 146.93)",
+      "chart-4": "oklch(0.42 0.012 146.93)",
+      "chart-5": "oklch(0.3 0.012 146.93)",
+      "sidebar": "oklch(0.9718 0.0059 45)",
+      "sidebar-foreground": "oklch(0.145 0.0198 45)",
+      "sidebar-primary": "oklch(0.5309 0.1112 146.93)",
+      "sidebar-primary-foreground": "oklch(0.985 0.012 146.93)",
+      "sidebar-accent": "oklch(0.9717 0.0085 56.41)",
+      "sidebar-accent-foreground": "oklch(0.205 0.0085 56.41)",
+      "sidebar-border": "oklch(0.8955 0.0071 45)",
+      "sidebar-ring": "oklch(0.5309 0.1112 146.93)"
+    },
+    "dark": {
+      "background": "oklch(0.145 0.0055 45)",
+      "foreground": "oklch(0.985 0.012 45)",
+      "card": "oklch(0.1828 0.0058 45)",
+      "card-foreground": "oklch(0.985 0.012 45)",
+      "popover": "oklch(0.1828 0.0058 45)",
+      "popover-foreground": "oklch(0.985 0.012 45)",
+      "primary": "oklch(0.62 0.1056 146.93)",
+      "primary-foreground": "oklch(0.205 0.024 146.93)",
+      "secondary": "oklch(0.2206 0.0061 45)",
+      "secondary-foreground": "oklch(0.985 0.012 45)",
+      "muted": "oklch(0.2206 0.0061 45)",
+      "muted-foreground": "oklch(0.6658 0.0095 45)",
+      "accent": "oklch(0.3403 0.0093 58.49)",
+      "accent-foreground": "oklch(0.985 0.0093 58.49)",
+      "destructive": "oklch(0.6548 0.1927 32.23)",
+      "destructive-foreground": "oklch(0.205 0.024 32.23)",
+      "success": "oklch(0.6548 0.16 148)",
+      "success-foreground": "oklch(0.205 0.024 148)",
+      "warning": "oklch(0.82 0.16 78)",
+      "warning-foreground": "oklch(0.205 0.024 78)",
+      "info": "oklch(0.6548 0.19 248)",
+      "info-foreground": "oklch(0.205 0.024 248)",
+      "border": "oklch(0.2794 0.0065 45)",
+      "input": "oklch(0.4894 0.0065 45)",
+      "ring": "oklch(0.62 0.1056 146.93)",
+      "chart-1": "oklch(0.45 0.012 146.93)",
+      "chart-2": "oklch(0.56 0.012 146.93)",
+      "chart-3": "oklch(0.67 0.012 146.93)",
+      "chart-4": "oklch(0.78 0.012 146.93)",
+      "chart-5": "oklch(0.89 0.012 146.93)",
+      "sidebar": "oklch(0.1702 0.0057 45)",
+      "sidebar-foreground": "oklch(0.985 0.012 45)",
+      "sidebar-primary": "oklch(0.62 0.1056 146.93)",
+      "sidebar-primary-foreground": "oklch(0.205 0.024 146.93)",
+      "sidebar-accent": "oklch(0.3403 0.0093 58.49)",
+      "sidebar-accent-foreground": "oklch(0.985 0.0093 58.49)",
+      "sidebar-border": "oklch(0.2794 0.0065 45)",
+      "sidebar-ring": "oklch(0.62 0.1056 146.93)"
+    }
+  },
+  "css": {
+    ":root": {
+      "--border-width": "1px",
+      "--shadow-card": "0 1px 1px 0px oklch(0.18 0.0055 45 / 0.040), 0 2px 2px 0px oklch(0.18 0.0055 45 / 0.020)",
+      "--shadow-button": "var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink)",
+      "--tracking-heading": "-0.02em",
+      "--weight-heading": "400",
+      "--type-tracking": "0em",
+      "--surface-blur": "0px",
+      "--surface-saturate": "1",
+      "--tilt-range": "0deg",
+      "--motion-duration": "190ms",
+      "--motion-ease": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "--texture-image": "none",
+      "--texture-size": "auto",
+      "--texture-position": "0 0",
+      "--texture-blend": "normal",
+      "--card-texture-image": "none",
+      "--card-texture-size": "auto",
+      "--card-texture-position": "0 0",
+      "--card-texture-blend": "normal",
+      "--backdrop-image": "none",
+      "--backdrop-filter": "url(#dk-duotone)",
+      "--backdrop-opacity": "0.32",
+      "--outline-lit": "oklch(1 0 0 / 0.75)",
+      "--outline-shade": "oklch(0 0 0 / 0.05)",
+      "--outline-top": "oklch(0.7556 0.0095 45 / 0.95)",
+      "--outline-bottom": "oklch(0.7556 0.0095 45 / 0.12)",
+      "--outline-arm": "14px",
+      "--outline-ink": "oklch(0.6511 0.0678 146.93)",
+      "--outline-ink-destructive": "oklch(0.7427 0.1238 32.23)",
+      "--outline-drop": "calc(var(--border-width, 1px) * 3)",
+      "--ring-soft": "oklch(0.5309 0.1112 146.93 / 0.22)",
+      "--outline-mark": "oklch(0.6114 0.0119 45)",
+      "--elevation-0": "none",
+      "--elevation-1": "0 1px 1px 0px oklch(0.18 0.0055 45 / 0.040), 0 2px 2px 0px oklch(0.18 0.0055 45 / 0.020)",
+      "--elevation-2": "0 1px 2px 0px oklch(0.18 0.0055 45 / 0.060), 0 2px 4px 0px oklch(0.18 0.0055 45 / 0.030)",
+      "--elevation-3": "0 2px 4px 0px oklch(0.18 0.0055 45 / 0.080), 0 4px 9px 0px oklch(0.18 0.0055 45 / 0.040)"
+    },
+    ".dark": {
+      "--shadow-card": "0 1px 1px 0px oklch(0 0.0006 4.5 / 0.040), 0 2px 2px 0px oklch(0 0.0006 4.5 / 0.020)",
+      "--outline-lit": "oklch(1 0 0 / 0.11)",
+      "--outline-shade": "oklch(0 0 0 / 0.35)",
+      "--outline-top": "oklch(0.4978 0.0082 45 / 0.85)",
+      "--outline-bottom": "oklch(0.4978 0.0082 45 / 0.08)",
+      "--outline-ink": "oklch(0.4965 0.0644 146.93)",
+      "--outline-ink-destructive": "oklch(0.5222 0.1176 32.23)",
+      "--ring-soft": "oklch(0.62 0.1056 146.93 / 0.3)",
+      "--outline-mark": "oklch(0.6322 0.0093 45)",
+      "--elevation-1": "0 1px 1px 0px oklch(0 0.0006 4.5 / 0.040), 0 2px 2px 0px oklch(0 0.0006 4.5 / 0.020)",
+      "--elevation-2": "0 1px 2px 0px oklch(0 0.0006 4.5 / 0.060), 0 2px 4px 0px oklch(0 0.0006 4.5 / 0.030)",
+      "--elevation-3": "0 2px 4px 0px oklch(0 0.0006 4.5 / 0.080), 0 4px 9px 0px oklch(0 0.0006 4.5 / 0.040)"
+    },
+    "[data-slot=\"card\"], [data-slot=\"alert\"], [data-slot=\"item-group\"]": {
+      "border-color": "var(--outline-ink)",
+      "box-shadow": "var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink)"
+    },
+    "[data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"])": {
+      "border": "var(--border-width, 1px) solid var(--outline-ink)",
+      "box-shadow": "var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink)"
+    },
+    "[data-slot=\"button\"][data-variant=\"destructive\"]": {
+      "--outline-ink": "var(--outline-ink-destructive)"
+    },
+    "[data-slot=\"button-group\"] > [data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"])": {
+      "box-shadow": "none"
+    },
+    "[data-slot=\"input-group\"] > [data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"])": {
+      "box-shadow": "none"
+    },
+    "[data-slot=\"button-group\"]": {
+      "border-radius": "calc(var(--radius) - 2px)",
+      "box-shadow": "var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink)"
+    },
+    ":root, *": {
+      "text-transform": "lowercase",
+      "font-variant-caps": "normal"
+    },
+    "input, textarea, code, pre, abbr, [data-case=\"keep\"]": {
+      "text-transform": "none",
+      "font-variant-caps": "normal"
+    },
+    "[data-slot=\"card-title\"], h1, h2, h3": {
+      "text-transform": "lowercase",
+      "font-variant-caps": "normal"
+    },
+    "[data-slot=\"label\"], [data-slot=\"badge\"], [data-slot=\"eyebrow\"], [data-slot=\"button\"], th": {
+      "text-transform": "lowercase",
+      "font-variant-caps": "normal"
+    },
+    "[data-slot=\"card-title\"]": {
+      "font-size": "calc(1rem * 1.25)"
+    },
+    "[class*=\"transition\"], [data-slot]": {
+      "transition-duration": "var(--motion-duration)",
+      "transition-timing-function": "var(--motion-ease)"
+    },
+    "@media (prefers-reduced-motion: reduce)": {
+      "[class*=\"transition\"], [data-slot]": {
+        "transition-duration": "1ms"
+      }
+    }
+  },
+  "docs": "Green 3 sets Geist Serif for headings, Geist for body and Paper Mono for code. GeistSerifVF.woff2 and PaperMono-Variable.woff2 are self-hosted: copy them from this package's fonts/ into your public/fonts/, or point the @font-face at your own path. A registry item carries CSS, not binaries, so the faces cannot travel in it. Note: this kit sets a text-transform on every element, so installing it recases your whole app. input, textarea, code, pre, abbr and [data-case=\"keep\"] are exempt."
+}

@@ -351,11 +351,16 @@ const pkg = {
   name: `${data.id}-design-kit`,
   version: data.version,
   description: data.note,
+  license: "MIT",
+  /* The fonts are not MIT and their licences travel beside them in fonts/.
+     A package that claims one licence for everything inside it is wrong in
+     the way that matters. */
+  repository: { type: "git", url: "git+https://github.com/REPLACE-ME/design-kit.git" },
   /* No main and no types: this ships CSS and font files, and a package that
      claims a JS entry point it does not have breaks bundlers that believe
      it. Everything is reached through exports by its own name. */
   type: "module",
-  files: [`${data.id}.css`, "fonts", "registry", "README.md"],
+  files: [`${data.id}.css`, "fonts", "registry", "README.md", "LICENSE"],
   exports: {
     "./theme.css": `./${data.id}.css`,
     [`./registry/${data.id}.json`]: `./registry/${data.id}.json`,
@@ -367,6 +372,7 @@ const pkg = {
 };
 
 writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + "\n", "utf8");
+copyFileSync(join(ROOT, "LICENSE"), join(OUT, "LICENSE"));
 
 const readme = `# ${data.name}
 

@@ -1,0 +1,28 @@
+{
+  "name": "green-3-design-kit",
+  "version": "0.2.0",
+  "description": "The house kit. Sea green on warm paper, set lower case in Geist Serif.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/REPLACE-ME/design-kit.git"
+  },
+  "type": "module",
+  "files": [
+    "green-3.css",
+    "fonts",
+    "registry",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    "./theme.css": "./green-3.css",
+    "./registry/green-3.json": "./registry/green-3.json",
+    "./registry/green-3-components.json": "./registry/green-3-components.json",
+    "./fonts/*": "./fonts/*",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "*.css"
+  ]
+}
