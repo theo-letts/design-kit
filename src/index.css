@@ -1,0 +1,424 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* The app chrome's own palette. The preview subtree overrides these inline. */
+:root {
+  --radius: 0.625rem;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Paper Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Default scale, for the app chrome. The canvas overrides these inline. */
+  --text-xs: 0.608rem;
+  --text-sm: 0.729rem;
+  --text-base: 0.875rem;
+  --text-lg: 1.05rem;
+  --text-xl: 1.26rem;
+  --text-2xl: 1.512rem;
+  --text-3xl: 1.814rem;
+  --text-4xl: 2.177rem;
+  --type-tracking: 0em;
+
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+}
+
+@utility font-heading {
+  font-family: var(--font-heading);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 28%, transparent);
+  }
+}
+
+/* Everything inside the canvas inherits the generated theme's typeface. */
+.themed {
+  font-family: var(--font-sans);
+}
+
+/* Range input styled to match the rest of the kit. */
+.ui-slider::-webkit-slider-runnable-track {
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: linear-gradient(to right, var(--primary) var(--pct), var(--muted) var(--pct));
+}
+.ui-slider::-moz-range-track {
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: linear-gradient(to right, var(--primary) var(--pct), var(--muted) var(--pct));
+}
+.ui-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -0.3125rem;
+  height: 1rem;
+  width: 1rem;
+  border-radius: 9999px;
+  background: var(--background);
+  border: 1px solid var(--primary);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+}
+.ui-slider::-moz-range-thumb {
+  height: 1rem;
+  width: 1rem;
+  border: 1px solid var(--primary);
+  border-radius: 9999px;
+  background: var(--background);
+}
+
+/* --------------------------------------------------------------- texture */
+/* Blended into the surface's own background colour, so there is no overlay
+   element and no stacking context to fight with. Exactly what toCss() emits. */
+
+.themed {
+  letter-spacing: var(--type-tracking);
+  position: relative;
+  isolation: isolate;
+  background-image: var(--texture-image, none);
+  background-size: var(--texture-size, auto);
+  background-position: var(--texture-position, 0 0);
+  background-blend-mode: var(--texture-blend, normal);
+}
+
+/* -------------------------------------------------------------- backdrop */
+/* An image needs its own layer: `filter` applies to an element's descendants,
+   so greyscaling or duotoning the canvas itself would take the UI with it. */
+
+.themed[data-backdrop="shader"]::before {
+  content: none;
+}
+
+.themed[data-backdrop]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background-image: var(--backdrop-image);
+  background-size: cover;
+  background-position: center;
+  filter: var(--backdrop-filter);
+  opacity: var(--backdrop-opacity);
+  pointer-events: none;
+}
+
+.themed[data-backdrop] > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* The component surfaces carry their own layer, independent of the page. */
+.themed [data-slot="card"],
+.themed [data-slot="alert"],
+.themed [data-slot="item-group"] {
+  background-image: var(--card-texture-image, none);
+  background-size: var(--card-texture-size, auto);
+  background-position: var(--card-texture-position, 0 0);
+  background-blend-mode: var(--card-texture-blend, normal);
+}
+
+/* ----------------------------------------------------------------- glass */
+/* Only under [data-surface="Glass"]: backdrop-filter builds a compositing
+   layer even at blur(0), so it is not something to leave switched on. */
+
+.themed[data-surface="Glass"] [data-slot="card"],
+.themed[data-surface="Glass"] [data-slot="alert"],
+.themed[data-surface="Glass"] [data-slot="item-group"],
+.themed[data-surface="Glass"] [data-slot="popover-content"],
+.themed[data-surface="Glass"] [data-slot="sheet-content"] {
+  backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+  -webkit-backdrop-filter: blur(var(--surface-blur)) saturate(var(--surface-saturate));
+}
+
+/* ---------------------------------------------------------------- motion */
+/* Only elements that already declare a transition get retimed: transition-
+   property defaults to `all`, so timing everything would animate every colour
+   the theme changes, which is not what "animations" means here. */
+
+.themed [class*="transition"],
+.themed [data-slot] {
+  transition-duration: var(--motion-duration, 150ms);
+  transition-timing-function: var(--motion-ease, ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .themed [class*="transition"],
+  .themed [data-slot] {
+    transition-duration: 1ms;
+  }
+}
+
+/* When the theme itself changes, the colours move rather than cut. This is
+   the one animation the remixer exists for: every slider and every kit swap
+   is a colour change, and watching forty cards snap between palettes reads
+   as a reload rather than an adjustment.
+
+   It sits in @layer base deliberately. A blanket transition-property would
+   otherwise outrank the utilities — `transition-[left,width]` on the tab
+   pill, `transition-[grid-template-rows]` on a panel — and replace them,
+   which would stop the two most visible animations in the kit. In the base
+   layer it only reaches elements that never declared one of their own. */
+@layer base {
+  .themed,
+  .themed [data-slot] {
+    transition-property:
+      background-color, border-color, color, fill, stroke, box-shadow, border-radius;
+    transition-duration: var(--motion-duration, 150ms);
+    transition-timing-function: var(--motion-ease, ease);
+  }
+}
+
+/* --------------------------------------------------------- page changes */
+/* The four pages are four documents, so moving between them is a navigation
+   and not a route — which used to mean a white flash. A cross-document view
+   transition makes it one view becoming another. Chrome only for now; every
+   other browser navigates exactly as it did before. */
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ tilt */
+/* The seed repeats every nine siblings, so the scatter is stable between
+   renders. Transform does not affect layout, which is why the angles stay
+   small: past about 2deg neighbouring cards start to overlap. */
+
+.themed[data-tilt="on"] [data-slot="card"],
+.themed[data-tilt="on"] [data-slot="alert"],
+.themed[data-tilt="on"] [data-slot="item-group"] {
+  transform: rotate(calc(var(--tilt-seed, 0) * var(--tilt-range, 0deg)));
+  transition: transform 180ms ease;
+}
+
+.themed[data-tilt="on"] [data-slot="card"]:nth-child(9n + 1) {
+  --tilt-seed: 0.9;
+}
+.themed[data-tilt="on"] [data-slot="card"]:nth-child(9n + 2) {
+  --tilt-seed: -0.5;
+}
+.themed[data-tilt="on"] [data-slot="card"]:nth-child(9n + 3) {
+  --tilt-seed: 0.35;
+}
+.themed[data-tilt="on"] [data-slot="card"]:nth-child(9n + 4) {
+  --tilt-seed: -1;
+}
+.themed[data-tilt="on"] [data-slot="card"]:nth-child(9n + 5) {
+  --tilt-seed: 0.65;
+}
+.themed[data-tilt="on"] [data-slot="card"]:nth-child(9n + 6) {
+  --tilt-seed: -0.2;
+}
+.themed[data-tilt="on"] [data-slot="card"]:nth-child(9n + 7) {
+  --tilt-seed: 1;
+}
+.themed[data-tilt="on"] [data-slot="card"]:nth-child(9n + 8) {
+  --tilt-seed: -0.75;
+}
+.themed[data-tilt="on"] [data-slot="card"]:nth-child(9n + 9) {
+  --tilt-seed: 0.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .themed[data-tilt="on"] [data-slot="card"],
+  .themed[data-tilt="on"] [data-slot="alert"],
+  .themed[data-tilt="on"] [data-slot="item-group"] {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------- styles */
+/* A style preset is just these variables. Components read them through
+   data-slot hooks, the same seams real shadcn/ui components expose. */
+
+.themed [data-slot="card"],
+.themed [data-slot="alert"] {
+  border-width: var(--border-width);
+  box-shadow: var(--shadow-card);
+}
+
+.themed [data-slot="input"],
+.themed [data-slot="textarea"],
+.themed [data-slot="select"],
+.themed [data-slot="input-group"],
+.themed [data-slot="input-otp-slot"],
+.themed [data-slot="combobox-trigger"],
+.themed [data-slot="radio-card"],
+.themed [data-slot="toggle-group"],
+.themed [data-slot="button"][data-variant="outline"] {
+  border-width: var(--border-width);
+}
+
+/* A group owns the box; the input inside it is only the text field.
+   The rule above is right on its own and wrong here — at (0,2,0) it outranks
+   the group's own [&>input]:border-0 at (0,1,1), so the input kept its
+   border. Its radius and shadow were never taken off it at all, so what you
+   saw was a second rounded rect sitting inside the first, with the seam
+   showing against the addon. */
+.themed [data-slot="input-group"] > input,
+.themed [data-slot="input-group"] > [data-slot="input"],
+.themed [data-slot="input-group"] > textarea {
+  border-width: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Anything that floats above the page wears the card's border and shadow. */
+.themed [data-slot="popover-content"],
+.themed [data-slot="hover-card-content"],
+.themed [data-slot="context-menu-content"],
+.themed [data-slot="alert-dialog-content"],
+.themed [data-slot="sheet-content"],
+.themed [data-slot="toast"],
+.themed [data-slot="calendar"],
+.themed [data-slot="item-group"],
+.themed [data-slot="empty"] {
+  border-width: var(--border-width);
+  box-shadow: var(--shadow-card);
+}
+
+.themed [data-slot="button"][data-variant="default"],
+.themed [data-slot="button"][data-variant="secondary"],
+.themed [data-slot="button"][data-variant="destructive"] {
+  box-shadow: var(--shadow-button);
+}
+
+.themed [data-slot="card-title"],
+.themed h1,
+.themed h2,
+.themed h3 {
+  letter-spacing: var(--tracking-heading);
+  font-weight: var(--weight-heading);
+}
+
+/* ----------------------------------------------------------- scroll area */
+
+.ui-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.ui-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.ui-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border: 2px solid transparent;
+  background-clip: content-box;
+  border-radius: 999px;
+}
+.ui-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}

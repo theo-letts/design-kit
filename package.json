@@ -1,0 +1,44 @@
+{
+  "name": "design-kit",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "kit": "node scripts/kit.mjs",
+    "film": "node scripts/film.mjs",
+    "film:update": "node scripts/film.mjs --update",
+    "film:kits": "node scripts/film.mjs --kits",
+    "film:kits:update": "node scripts/film.mjs --kits --update",
+    "film:motion": "node scripts/film.mjs --motion"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.70.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "pixelmatch": "^8.0.0",
+    "playwright-core": "^1.65.0",
+    "pngjs": "^7.0.0",
+    "prettier": "^3.10.1",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6",
+    "vitest": "^5.1.0",
+    "zod": "^4.6.7"
+  }
+}

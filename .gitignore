@@ -1,0 +1,15 @@
+node_modules
+dist
+.DS_Store
+
+# Generated. `npm run kit` rebuilds it, and the version inside package.json
+# is carried across runs, so the folder is output rather than source.
+kit
+
+# The gate's working files. Baselines are committed; what a run produced and
+# what it diffed are not — they are rewritten every time.
+film/out
+film/diff
+
+.env
+.env.local
