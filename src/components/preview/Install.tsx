@@ -247,7 +247,11 @@ export function Install({ kit }: { kit: Kit }) {
           from a repository that has no path to this one. */}
       <AgentCopy kit={kit} />
 
-      <div className="grid gap-6 md:grid-cols-3">
+      {/* [&>*]:min-w-0 for the same reason the snippet needs it: a grid item's
+          automatic minimum is its content, so a column refuses to shrink below
+          whatever the longest unbreakable thing inside it is and quietly
+          overhangs its own track. */}
+      <div className="grid gap-6 [&>*]:min-w-0 md:grid-cols-3">
         <Route
           n={1}
           title="registry"

@@ -15,6 +15,8 @@
     "film": "node scripts/film.mjs",
     "film:update": "node scripts/film.mjs --update",
     "film:kits": "node scripts/film.mjs --kits",
+    "film:mobile": "node scripts/film.mjs --width 390 --height 844",
+    "film:mobile:update": "node scripts/film.mjs --width 390 --height 844 --update",
     "film:kits:update": "node scripts/film.mjs --kits --update",
     "film:motion": "node scripts/film.mjs --motion"
   },

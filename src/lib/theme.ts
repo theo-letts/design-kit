@@ -21,6 +21,7 @@ import { MOTION, MOTION_RULE } from "./motion";
 import { DEPTHS } from "./glass";
 import { borderStep, tintBorder } from "./border";
 import { buttonOutlineCss, outlineCss } from "./outline";
+import { mobileCss } from "./mobile";
 import { caseCss, headingSizeCss, stepScale } from "./wording";
 import { isShader } from "./backdrop";
 import { FRAGMENT_SHADERS } from "./shaders";
@@ -544,6 +545,7 @@ export function toCss(theme: Theme): string {
     btnOutline ? buttonOutlineCss(c.buttonOutline) : "",
     caseCss({ heading: c.headingCase, label: c.labelCase, body: c.bodyCase }),
     headingSizeCss(c.headingSize),
+    mobileCss(),
   ].filter(Boolean);
 
   const layered = (mode: "light" | "dark") => {

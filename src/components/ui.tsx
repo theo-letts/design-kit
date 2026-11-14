@@ -487,8 +487,17 @@ export function TabPanel({
 
 /* ----------------------------------------------------------------- Table */
 
+/** A table, in a scroller.
+ *
+ *  Tables are the one thing that genuinely cannot reflow on a phone: a
+ *  column dropped to make it fit is data removed from the page, and a table
+ *  that merely clips loses its last column without saying so. The wrapper
+ *  is not optional and takes no prop, because a table that scrolls only
+ *  when someone remembers to ask is a table that does not scroll. */
 export const Table = ({ className, ...p }: React.ComponentProps<"table">) => (
-  <table className={cn("w-full caption-bottom text-sm", className)} {...p} />
+  <div data-slot="table-scroll">
+    <table className={cn("w-full caption-bottom text-sm", className)} {...p} />
+  </div>
 );
 export const Th = ({ className, ...p }: React.ComponentProps<"th">) => (
   <th

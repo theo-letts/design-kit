@@ -357,10 +357,14 @@ async function filmStill(page, state) {
     if (again.equals(shot)) break;
     shot = again;
   }
-  const outPath = join(DIR.out, `${state.name}.png`);
+  const outPath = join(DIR.out, `${state.name}${WIDTH === 1280 ? "" : `@${WIDTH}`}.png`);
   writeFileSync(outPath, shot);
 
-  const basePath = join(DIR.baseline, `${state.name}.png`);
+  /* Width goes in the filename only when it is not the default, so the
+     existing baselines keep their names and a phone-width run cannot
+     overwrite a desktop one. */
+  const suffix = WIDTH === 1280 ? "" : `@${WIDTH}`;
+  const basePath = join(DIR.baseline, `${state.name}${suffix}.png`);
   if (UPDATE || !existsSync(basePath)) {
     writeFileSync(basePath, shot);
     console.log(`  ${state.name}: baseline ${UPDATE ? "updated" : "created"}`);
@@ -382,7 +386,11 @@ async function filmStill(page, state) {
   });
   const ratio = changed / (actual.width * actual.height);
   const ok = ratio * 100 <= TOLERANCE;
-  if (!ok) writeFileSync(join(DIR.diff, `${state.name}.png`), PNG.sync.write(diff));
+  if (!ok)
+    writeFileSync(
+      join(DIR.diff, `${state.name}${WIDTH === 1280 ? "" : `@${WIDTH}`}.png`),
+      PNG.sync.write(diff),
+    );
   console.log(
     `  ${state.name}: ${pct(ratio)} changed ${ok ? "✓" : `✗ over ${TOLERANCE}% — see film/diff/${state.name}.png`}`,
   );

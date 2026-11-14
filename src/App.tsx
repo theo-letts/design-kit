@@ -464,7 +464,32 @@ export default function App() {
   }, [config.mode, shuffle, theme]);
 
   return (
-    <div className="flex h-dvh overflow-hidden">
+    <div className="flex h-dvh flex-col overflow-hidden lg:flex-row">
+      {/* The remixer is a two-pane tool and it does not fit a phone: the rail
+          alone is 17.5rem of a 23.4rem screen. Saying so is better than
+          rendering it anyway and letting the canvas become a sliver — and
+          better than hiding it, because someone on a phone still wants to
+          look at what the kit produces. The other three pages do fit. */}
+      <div className="bg-sidebar flex shrink-0 flex-col gap-1 border-b px-4 py-3 text-sm lg:hidden">
+        <p className="font-medium">The remixer wants a wider screen.</p>
+        <p className="text-muted-foreground text-xs">
+          Its sidebar is 280px of controls beside a live canvas, which needs room to be worth
+          anything. These three read fine on a phone:{" "}
+          <a className="underline underline-offset-2" href="/kit.html">
+            Design Kit
+          </a>
+          ,{" "}
+          <a className="underline underline-offset-2" href="/specimens.html">
+            Specimens
+          </a>
+          ,{" "}
+          <a className="underline underline-offset-2" href="/studies.html">
+            Studies
+          </a>
+          .
+        </p>
+      </div>
+
       <Sidebar
         config={config}
         onConfig={setConfig}

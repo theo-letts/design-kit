@@ -771,6 +771,45 @@ the scale was one axis you could re-pick by hand. These axes live entirely in th
 variables, so they travel now, emitted whenever the scale or any size group is off
 Default.
 
+## Mobile
+
+The kit had no mobile contract at all — one `sm:` and one `lg:` in 2,373 lines of
+components — and the measurements said so: **1,383** clipped elements on the remixer at
+375px, **23** on the Design Kit page, and a 36px default button under every published
+touch floor.
+
+These are rules, and they ship _with the theme_ rather than living in this app. A
+consumer who installs the kit gets them, because "works on mobile" is a property of the
+system and not of the page that happens to be showing it.
+
+|                                   |                                                                                                                                                                                                                                                                                              |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Touch targets**                 | 44px on coarse pointers, grown with a pseudo-element so the control keeps the size it was designed at. Apple asks 44pt, Material 48dp, WCAG 2.5.8 a hard 24px — and fattening every button on desktop to fix an input problem desktop does not have would be trading one design for another. |
+| **Rows scroll, they do not clip** | Tabs, button groups, toggle groups and pagination. A strip at 375px either scrolls or silently loses its last option, and losing it is not a trade anyone chose.                                                                                                                             |
+| **Tables scroll**                 | The one thing that genuinely cannot reflow: a column dropped to make it fit is data removed from the page. The wrapper takes no prop, because a table that scrolls when someone remembers to ask is a table that does not scroll.                                                            |
+| **Long tokens wrap**              | `overflow-wrap: anywhere` on code. One file path in a paragraph was pushing a whole column 30px past the screen.                                                                                                                                                                             |
+| **Dialogs come from the bottom**  | Below 640px. A centred box with a margin is a desktop shape; on a phone it wastes the width it has and puts the actions out of thumb reach.                                                                                                                                                  |
+| **Minimum width**                 | 360px. Stated, so it can be argued with.                                                                                                                                                                                                                                                     |
+
+Two traps worth knowing, because both cost an hour here and look identical from the
+outside — content overhanging a container that will not shrink:
+
+- A **flex** item's automatic minimum is its content, so `flex-1` alone refuses to
+  shrink and `overflow-x-auto` puts a scrollbar on a box that is already too wide to
+  see. It needs `min-w-0`.
+- A **grid** item has the same automatic minimum, so a column overhangs its own track.
+  `[&>*]:min-w-0` on the grid.
+
+`npm run film:mobile` films the set at 390×844; baselines carry the width in their
+filename, so a phone run cannot overwrite a desktop one.
+
+**The remixer is exempt and says so.** It is a two-pane tool whose rail alone is 280px
+of a 375px screen, and no amount of stacking makes that worth using. Below `lg` it shows
+a line saying the screen is too narrow and links to the three pages that do read on a
+phone. That is better than rendering it anyway and letting the canvas become a sliver,
+and better than hiding it, because someone on a phone still wants to see what the kit
+produces.
+
 ## Behaviour
 
 Motion said how long a change took; nothing said what actually moved.
