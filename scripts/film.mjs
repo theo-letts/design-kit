@@ -338,7 +338,25 @@ async function filmMotion(page, state) {
 
 async function filmStill(page, state) {
   const el = page.locator(SELECT).first();
-  const shot = await el.screenshot();
+
+  /* Shoot until two consecutive frames agree.
+  
+     Every attempt to predict when the page has finished settling has been
+     wrong in a different way: fonts.ready resolves before a face has been
+     asked for, a weight list waits forever on an 800 most families do not
+     ship, and a face count can plateau mid-load. Comparing two frames needs
+     no theory about why the first one moved, and costs one extra screenshot
+     on a page that was already still — which is the common case.
+     
+     It is not a complete fix. If both frames land before a face arrives they
+     agree and are both wrong, which is why the waits above still matter. */
+  let shot = await el.screenshot();
+  for (let i = 0; i < 4; i++) {
+    await page.waitForTimeout(250);
+    const again = await el.screenshot();
+    if (again.equals(shot)) break;
+    shot = again;
+  }
   const outPath = join(DIR.out, `${state.name}.png`);
   writeFileSync(outPath, shot);
 
