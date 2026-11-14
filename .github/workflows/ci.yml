@@ -1,0 +1,61 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # Cheap and total: these three catch most of what breaks, in seconds.
+      - run: npx tsc --noEmit
+      - run: npx vitest run
+      - run: npx prettier --check .
+
+      # The exported package is a build output, and a build output that is
+      # not built in CI is a build output that stops building.
+      - run: npm run build
+
+  # Kept separate because it needs a browser and takes minutes, and because
+  # it is the job most likely to fail for a reason that is not your change:
+  # it compares pixels at zero tolerance while fonts arrive over a network.
+  # The cache is what makes it repeatable — the first run on a fresh machine
+  # populates it and is expected to be the unreliable one.
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+
+      - name: Cache webfaces
+        uses: actions/cache@v4
+        with:
+          path: film/fonts-cache
+          key: fonts-${{ hashFiles('src/lib/fonts.ts') }}
+
+      - run: npm run dev &
+      - run: npx wait-on http://localhost:5173 -t 60000
+
+      # Warm the cache, then gate. Without the warm-up the first run is
+      # racing the CDN and fails for reasons unrelated to the commit.
+      - run: npm run film -- --states default || true
+      - run: npm run film:kits
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-diff
+          path: film/diff

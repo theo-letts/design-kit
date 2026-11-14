@@ -22,6 +22,8 @@ import { DEPTHS } from "./glass";
 import { borderStep, tintBorder } from "./border";
 import { buttonOutlineCss, outlineCss } from "./outline";
 import { mobileCss } from "./mobile";
+import { structureCss } from "./structure";
+import { KIT_VERSION } from "./version";
 import { caseCss, headingSizeCss, stepScale } from "./wording";
 import { isShader } from "./backdrop";
 import { FRAGMENT_SHADERS } from "./shaders";
@@ -545,6 +547,7 @@ export function toCss(theme: Theme): string {
     btnOutline ? buttonOutlineCss(c.buttonOutline) : "",
     caseCss({ heading: c.headingCase, label: c.labelCase, body: c.bodyCase }),
     headingSizeCss(c.headingSize),
+    structureCss(),
     mobileCss(),
   ].filter(Boolean);
 
@@ -559,6 +562,9 @@ export function toCss(theme: Theme): string {
 
   return `:root {
   color-scheme: light;
+  /* So a consumer — or an agent reading their stylesheet — can tell which
+     build of the kit this is without asking anyone. */
+  --kit-version: "${KIT_VERSION}";
   --radius: ${effectiveRadius(c)}rem;
   --spacing: ${s.spacing}rem;
   --font-sans: ${fontStack(c.fontSans)};

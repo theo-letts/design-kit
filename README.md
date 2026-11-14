@@ -101,9 +101,37 @@ components: the self-hosted faces cannot travel in a registry item, which carrie
 not binaries; and the body case axis, unscoped, compiles to `:root, *`, so installing this
 kit recases the consuming app.
 
-Publishing is yours to do — `npm publish`, or a git remote to install from. The version in
-`kit/package.json` survives regeneration on purpose: the folder is rebuilt from scratch
-every run, and a release number is a decision rather than output.
+### Versions
+
+`src/lib/version.ts` is the single source. `npm run kit` stamps it into the package, both
+registry items, and the stylesheet itself as `--kit-version`, so a consumer — or an agent
+reading their CSS — can tell which build they have without asking anyone. Bump it when
+the exported CSS changes _meaning_: new tokens, different derivations, rules that behave
+differently. Not for a new preset, which changes values and not the contract.
+
+It used to live in `kit/package.json` and be read back each run so regeneration would not
+reset it. That worked and was the wrong place — the folder is output, so the one number
+nobody could regenerate was being kept in the thing that gets deleted and rebuilt.
+
+### The supported route
+
+**The registry, with npm as the backstop.** Two items, and the theme depends on the
+components, so `npx shadcn add .../green-3.json` brings both:
+
+|                           |                                                                                          |
+| ------------------------- | ---------------------------------------------------------------------------------------- |
+| `green-3.json`            | `registry:theme`. Tokens, the style preset's rules, the axis rules, the mobile contract. |
+| `green-3-components.json` | `registry:ui`. `ui.tsx`, `icons.tsx` and `utils.ts`, with npm dependencies declared.     |
+
+The components item exists because CSS cannot carry a sliding tab indicator, a panel that
+opens at its own height, or a table that scrolls. A shadcn consumer owns their copy of
+every component, so without it every change to `ui.tsx` is stranded in this repo. It
+ships the files whole: `ui.tsx` is one 2,300-line module, and splitting it is worth doing
+for its own sake rather than as a prerequisite for shipping it.
+
+**Publishing is the one step that is yours.** Add a git remote, or `npm publish`, and
+host `kit/registry/*.json` somewhere stable. Nothing propagates until that exists — every
+consumer today holds a snapshot with no way back to you.
 
 ## How a reference is read
 
@@ -802,6 +830,20 @@ outside — content overhanging a container that will not shrink:
 
 `npm run film:mobile` films the set at 390×844; baselines carry the width in their
 filename, so a phone run cannot overwrite a desktop one.
+
+### Why the gate caches fonts
+
+It compares pixels at zero tolerance while fetching webfaces over the internet, which is
+a race it loses often enough to be ignored — a frame shot before a face lands renders in
+fallback metrics and comes back as a few hundred scattered text bands. Five waiting
+strategies each failed differently, because the problem is not _when to look_: it is that
+the answer arrives at a time nobody controls.
+
+So the faces are cached to `film/fonts-cache` and served from disk. The first run on a
+machine still fetches and is still racy; every run after is local. CI caches the folder
+and warms it before gating. Measured over ten runs: eight clean, two not — much better
+than it was, and not yet deterministic. The remaining fix is to inline the faces as data
+URIs for the gate build, so there is no fetch at all.
 
 **The remixer is exempt and says so.** It is a two-pane tool whose rail alone is 280px
 of a 375px screen, and no amount of stacking makes that worth using. Below `lg` it shows

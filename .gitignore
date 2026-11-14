@@ -11,5 +11,9 @@ kit
 film/out
 film/diff
 
+# Webfaces cached so the gate is not racing a CDN. Local, and rebuilt on
+# first run; CI caches it rather than committing it.
+film/fonts-cache
+
 .env
 .env.local

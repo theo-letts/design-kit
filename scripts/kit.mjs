@@ -109,6 +109,7 @@ const data = await page.evaluate(async (wanted) => {
     name: kit.name,
     note: kit.note,
     css: theme.toCss(built),
+    version: (await import("/src/lib/version.ts")).KIT_VERSION,
     faces: fonts.selfHostedCss(names),
     links: fonts.fontLinkTags(names),
     families: { sans: c.fontSans, heading: c.fontHeading, mono: c.fontMono },
@@ -126,20 +127,10 @@ await browser.close();
 const used = [...data.faces.matchAll(/url\("\/fonts\/([^"]+)"\)/g)].map((m) => m[1]);
 const faces = data.faces.replaceAll('url("/fonts/', 'url("./fonts/');
 
-/* The folder is rebuilt from scratch every run, so anything hand-edited in
-   it is lost by design — except the version, which is a release decision
-   rather than generated output and would otherwise be reset to 0.1.0 every
-   time someone regenerated after publishing. */
+/* The folder is output: wiped and rebuilt every run. Nothing in it is a
+   source of truth any more, including the version — that lives in
+   src/lib/version.ts, where git can see it change. */
 const pkgPath = join(OUT, "package.json");
-let version = "0.1.0";
-if (existsSync(pkgPath)) {
-  try {
-    const prev = JSON.parse(readFileSync(pkgPath, "utf8"));
-    if (typeof prev.version === "string") version = prev.version;
-  } catch {
-    /* unreadable, so start again at 0.1.0 */
-  }
-}
 
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(join(OUT, "fonts"), { recursive: true });
@@ -275,6 +266,8 @@ const item = {
   type: "registry:theme",
   title: data.name,
   description: data.note,
+  version: data.version,
+  registryDependencies: [`./${data.id}-components.json`],
   cssVars: data.vars,
   /* Everything the kit invented for its own rules — stroke widths, shadow
      ladders, the motion pair, the Offset inks — belongs on :root rather than
@@ -309,11 +302,54 @@ writeFileSync(
   "utf8",
 );
 
+/* ------------------------------------------- the components item */
+
+/* The theme item above is CSS, and CSS cannot carry a sliding tab indicator,
+   a panel that opens at its own height, or a table that scrolls. Those are
+   component code, and a shadcn consumer owns their copy of every component —
+   so without this item, every change to ui.tsx is stranded in this repo.
+   
+   It ships the files whole rather than one component per item. That is the
+   honest shape of what exists: ui.tsx is a single 2,300-line module, and
+   splitting it is worth doing for its own sake, not as a prerequisite for
+   shipping it. */
+const COMPONENT_FILES = [
+  { path: "src/components/ui.tsx", target: "@components/ui.tsx" },
+  { path: "src/components/icons.tsx", target: "@components/icons.tsx" },
+  { path: "src/lib/utils.ts", target: "@lib/utils.ts" },
+];
+
+const components = {
+  $schema: "https://ui.shadcn.com/schema/registry-item.json",
+  name: `${data.id}-components`,
+  type: "registry:ui",
+  title: `${data.name} components`,
+  description: "The primitives this kit is drawn against: shadcn-shaped, hand-rolled, no Radix.",
+  version: data.version,
+  dependencies: ["clsx", "tailwind-merge", "lucide-react"],
+  files: COMPONENT_FILES.map(({ path, target }) => ({
+    path,
+    target,
+    type: "registry:ui",
+    content: readFileSync(join(ROOT, path), "utf8"),
+  })),
+  docs:
+    `Pair with the ${data.id} theme item, which carries the tokens and the rules. ` +
+    "These components read them through data-slot attributes; on their own they are " +
+    "unstyled shadcn shapes.",
+};
+
+writeFileSync(
+  join(OUT, "registry", `${data.id}-components.json`),
+  JSON.stringify(components, null, 2) + "\n",
+  "utf8",
+);
+
 /* ------------------------------------------------------ the package */
 
 const pkg = {
   name: `${data.id}-design-kit`,
-  version,
+  version: data.version,
   description: data.note,
   /* No main and no types: this ships CSS and font files, and a package that
      claims a JS entry point it does not have breaks bundlers that believe
@@ -323,6 +359,7 @@ const pkg = {
   exports: {
     "./theme.css": `./${data.id}.css`,
     [`./registry/${data.id}.json`]: `./registry/${data.id}.json`,
+    [`./registry/${data.id}-components.json`]: `./registry/${data.id}-components.json`,
     "./fonts/*": "./fonts/*",
     "./package.json": "./package.json",
   },

@@ -339,68 +339,11 @@
 }
 
 /* ---------------------------------------------------------------- styles */
-/* A style preset is just these variables. Components read them through
-   data-slot hooks, the same seams real shadcn/ui components expose. */
-
-.themed [data-slot="card"],
-.themed [data-slot="alert"] {
-  border-width: var(--border-width);
-  box-shadow: var(--shadow-card);
-}
-
-.themed [data-slot="input"],
-.themed [data-slot="textarea"],
-.themed [data-slot="select"],
-.themed [data-slot="input-group"],
-.themed [data-slot="input-otp-slot"],
-.themed [data-slot="combobox-trigger"],
-.themed [data-slot="radio-card"],
-.themed [data-slot="toggle-group"],
-.themed [data-slot="button"][data-variant="outline"] {
-  border-width: var(--border-width);
-}
-
-/* A group owns the box; the input inside it is only the text field.
-   The rule above is right on its own and wrong here — at (0,2,0) it outranks
-   the group's own [&>input]:border-0 at (0,1,1), so the input kept its
-   border. Its radius and shadow were never taken off it at all, so what you
-   saw was a second rounded rect sitting inside the first, with the seam
-   showing against the addon. */
-.themed [data-slot="input-group"] > input,
-.themed [data-slot="input-group"] > [data-slot="input"],
-.themed [data-slot="input-group"] > textarea {
-  border-width: 0;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-/* Anything that floats above the page wears the card's border and shadow. */
-.themed [data-slot="popover-content"],
-.themed [data-slot="hover-card-content"],
-.themed [data-slot="context-menu-content"],
-.themed [data-slot="alert-dialog-content"],
-.themed [data-slot="sheet-content"],
-.themed [data-slot="toast"],
-.themed [data-slot="calendar"],
-.themed [data-slot="item-group"],
-.themed [data-slot="empty"] {
-  border-width: var(--border-width);
-  box-shadow: var(--shadow-card);
-}
-
-.themed [data-slot="button"][data-variant="default"],
-.themed [data-slot="button"][data-variant="secondary"],
-.themed [data-slot="button"][data-variant="destructive"] {
-  box-shadow: var(--shadow-button);
-}
-
-.themed [data-slot="card-title"],
-.themed h1,
-.themed h2,
-.themed h3 {
-  letter-spacing: var(--tracking-heading);
-  font-weight: var(--weight-heading);
-}
+/* A style preset is just these variables. The rules that make components
+   read them are generated in src/lib/structure.ts and injected by
+   ThemedCanvas, because the export needs exactly the same rules — they used
+   to live here, and a consumer got the variables without anything that
+   reads them. */
 
 /* ----------------------------------------------------------- scroll area */
 

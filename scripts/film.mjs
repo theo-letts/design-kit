@@ -20,6 +20,7 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { createHash } from "node:crypto";
 import { chromium } from "playwright-core";
 import { PNG } from "pngjs";
 import pixelmatch from "pixelmatch";
@@ -434,6 +435,42 @@ async function main() {
      baseline and the gate fails by ~0.017% the next morning — a real change
      and a false alarm at the same time, which is the worst kind. Pin the
      clock before the first navigation and the frame is the same on any day. */
+  /* Serve the webfaces from disk.
+  
+     This gate compares pixels at zero tolerance while fetching fonts over
+     the internet, which is a race it loses often enough to be ignored: a
+     frame shot before a face lands renders in fallback metrics and comes
+     back as a few hundred scattered text bands. Five different waiting
+     strategies each failed differently, because the problem is not when to
+     look — it is that the answer arrives at a time nobody controls.
+     
+     The cache removes the variable instead of waiting it out. The first run
+     on a machine still fetches and is still racy; every run after is local.
+     CI should cache the folder, and the first run there is the warm-up. */
+  const CACHE = join(ROOT, "film/fonts-cache");
+  mkdirSync(CACHE, { recursive: true });
+  await page.route(/fonts\.(googleapis|gstatic)\.com/, async (route) => {
+    const key = createHash("sha1").update(route.request().url()).digest("hex");
+    const body = join(CACHE, key);
+    const meta = `${body}.json`;
+
+    if (existsSync(body) && existsSync(meta)) {
+      const { headers } = JSON.parse(readFileSync(meta, "utf8"));
+      return route.fulfill({ status: 200, headers, body: readFileSync(body) });
+    }
+
+    const response = await route.fetch();
+    const bytes = await response.body();
+    /* Playwright hands back a decoded body, so the recorded encoding and
+       length would describe something this file is not. */
+    const headers = { ...response.headers() };
+    delete headers["content-encoding"];
+    delete headers["content-length"];
+    writeFileSync(body, bytes);
+    writeFileSync(meta, JSON.stringify({ headers }));
+    return route.fulfill({ status: response.status(), headers, body: bytes });
+  });
+
   await page.clock.setFixedTime(new Date("2026-01-15T12:00:00Z"));
   await page.goto(URL_BASE, { waitUntil: "networkidle" });
 

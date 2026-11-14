@@ -5,6 +5,7 @@ import { entranceCss } from "@/lib/entrances";
 import { fontUrl, loadFontCss } from "@/lib/fonts";
 import { interactCss } from "@/lib/interact";
 import { mobileCss } from "@/lib/mobile";
+import { structureCss } from "@/lib/structure";
 import { caseCss, headingSizeCss } from "@/lib/wording";
 import { buttonOutlineCss, outlineCss } from "@/lib/outline";
 import { buildTheme, themeVars, toBackdropSvg } from "@/lib/theme";
@@ -63,6 +64,9 @@ export function ThemedCanvas({
         headingSizeCss(config.headingSize, ".themed "),
         /* Not config-dependent — the kit's mobile contract applies to every
            theme, so it is emitted once rather than switched by an axis. */
+        /* The style preset applied to components. Not config-dependent:
+           the rules are constant and the variables inside them change. */
+        structureCss(".themed "),
         mobileCss(".themed "),
       ]
         .filter(Boolean)

@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "ci": "tsc --noEmit && vitest run && prettier --check . && vite build",
     "test": "vitest run",
     "test:watch": "vitest",
     "format": "prettier --write .",

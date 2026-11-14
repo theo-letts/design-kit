@@ -1,3 +1,6 @@
+# Not this project's files.
+.claude
+
 dist
 film
 kit
