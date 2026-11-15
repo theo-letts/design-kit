@@ -27,7 +27,9 @@ import { Badge, Button } from "../ui";
  *
  *  Built from the same generators the export uses, so it cannot drift from
  *  what the page is showing. */
-function agentBrief(kit: Kit): string {
+type ComponentFile = { target: string; source: string };
+
+function agentBrief(kit: Kit, components?: ComponentFile[]): string {
   const c = kit.config;
   const css = toCss(buildTheme(c));
   const faces = selfHostedCss([c.fontSans, c.fontHeading, c.fontMono]);
@@ -110,7 +112,23 @@ do. If it does not, those rules match nothing: you get the colours, type scale a
 radii, and none of the stroke, case or motion treatments. Do not invent markup to make
 them match — say so instead.
 
-## What this does not carry
+${
+  components
+    ? `## 4. The components
+
+These are the primitives the stylesheet above is drawn against: shadcn-shaped, no Radix,
+no CLI. Write each one at the path given. They are long — copy them, do not retype or
+summarise them, and do not "improve" them on the way in.
+
+Install their dependencies first:
+
+\`\`\`bash
+npm i clsx tailwind-merge lucide-react
+\`\`\`
+
+${components.map((f) => `### ${f.target}\n\n\`\`\`tsx\n${f.source}\n\`\`\``).join("\n\n")}
+`
+    : `## What this does not carry
 
 Components. CSS cannot carry a sliding tab indicator, a panel that opens at its own
 height, or a table that scrolls, and a shadcn project owns its copy of every component —
@@ -119,7 +137,8 @@ so those stay where they are unless someone copies them across.
 If this project has no shadcn components, or you want the ones this kit was drawn
 against, ask for \`kit/registry/${kit.id}-components.json\` from the design-kit repo. It
 carries \`ui.tsx\`, \`icons.tsx\` and \`utils.ts\` whole, with their npm dependencies
-listed. Do not try to reconstruct them from this stylesheet.
+listed. Do not try to reconstruct them from this stylesheet.`
+}
 
 ${effects.length ? `## Effects worth knowing\n\n${effects.map((e) => `- ${e}`).join("\n")}\n` : ""}
 ## Type
@@ -201,35 +220,72 @@ function Route({
   );
 }
 
+/* The component sources, fetched only if someone asks for them.
+ *
+ *  ui.tsx alone is 73kB of source. Raw-importing it at the top of this file
+ *  would put all of it in the bundle of a page most people open to look at
+ *  a specimen sheet, to serve a button they may never press. */
+async function loadComponents(): Promise<ComponentFile[]> {
+  const [ui, icons, utils] = await Promise.all([
+    import("@/components/ui.tsx?raw"),
+    import("@/components/icons.tsx?raw"),
+    import("@/lib/utils.ts?raw"),
+  ]);
+  return [
+    { target: "components/ui.tsx", source: ui.default },
+    { target: "components/icons.tsx", source: icons.default },
+    { target: "lib/utils.ts", source: utils.default },
+  ];
+}
+
 function AgentCopy({ kit }: { kit: Kit }) {
-  const [copied, setCopied] = React.useState(false);
+  const [copied, setCopied] = React.useState<"css" | "all" | null>(null);
+  const [size, setSize] = React.useState<number | null>(null);
   const brief = React.useMemo(() => agentBrief(kit), [kit]);
 
-  const copy = async () => {
+  const copy = async (which: "css" | "all") => {
+    const text = which === "css" ? brief : agentBrief(kit, await loadComponents());
+    setSize(Math.round(text.length / 1024));
     try {
-      await navigator.clipboard.writeText(brief);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2400);
+      await navigator.clipboard.writeText(text);
+      setCopied(which);
+      setTimeout(() => setCopied(null), 2400);
     } catch {
-      setCopied(false);
+      setCopied(null);
     }
   };
 
   const kb = Math.round(brief.length / 102.4) / 10;
 
   return (
-    <div className="bg-muted/40 flex flex-col gap-3 rounded-lg border p-4 sm:flex-row sm:items-center">
-      <div className="flex flex-1 flex-col gap-1">
+    <div className="bg-muted/40 flex flex-col gap-3 rounded-lg border p-4">
+      <div className="flex flex-col gap-1">
         <h3 className="font-heading text-base leading-none font-semibold">hand it to an agent</h3>
         <p className="text-muted-foreground text-sm">
-          The whole kit as one paste — the stylesheet inline, what to do with it, and the two things
-          it cannot carry. Works in a repo that has no path to this one.
+          The kit as one paste — the stylesheet inline, what to do with it, and the two things it
+          cannot carry. Works in a repo that has no path to this one.
         </p>
       </div>
-      <Button onClick={copy} className="shrink-0">
-        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-        {copied ? "copied" : `copy brief · ${kb} kB`}
-      </Button>
+
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <Button onClick={() => void copy("css")} className="flex-1">
+          {copied === "css" ? <Check className="size-4" /> : <Copy className="size-4" />}
+          {copied === "css" ? "copied" : `copy brief · ${kb} kB`}
+        </Button>
+        {/* The second one is for a project with no shadcn components in it.
+            Much bigger, and worth saying so before it lands in someone's
+            clipboard rather than after. */}
+        <Button variant="outline" onClick={() => void copy("all")} className="flex-1">
+          {copied === "all" ? <Check className="size-4" /> : <Copy className="size-4" />}
+          {copied === "all" ? "copied" : "with components · ~95 kB"}
+        </Button>
+      </div>
+
+      <p className="text-muted-foreground text-xs">
+        {size && copied
+          ? `${size} kB copied.`
+          : "Take the first if the project already has shadcn components. Take the second if it has none — it carries ui.tsx, icons.tsx and utils.ts whole."}
+      </p>
     </div>
   );
 }
