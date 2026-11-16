@@ -5,7 +5,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/REPLACE-ME/design-kit.git"
+    "url": "git+https://github.com/theo-letts/design-kit.git"
   },
   "type": "module",
   "files": [

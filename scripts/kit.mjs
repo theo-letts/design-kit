@@ -375,7 +375,7 @@ const pkg = {
   /* The fonts are not MIT and their licences travel beside them in fonts/.
      A package that claims one licence for everything inside it is wrong in
      the way that matters. */
-  repository: { type: "git", url: "git+https://github.com/REPLACE-ME/design-kit.git" },
+  repository: { type: "git", url: "git+https://github.com/theo-letts/design-kit.git" },
   /* No main and no types: this ships CSS and font files, and a package that
      claims a JS entry point it does not have breaks bundlers that believe
      it. Everything is reached through exports by its own name. */

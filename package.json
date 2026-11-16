@@ -7,9 +7,9 @@
   "author": "Theo Letts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/REPLACE-ME/design-kit.git"
+    "url": "git+https://github.com/theo-letts/design-kit.git"
   },
-  "homepage": "https://github.com/REPLACE-ME/design-kit#readme",
+  "homepage": "https://github.com/theo-letts/design-kit#readme",
   "type": "module",
   "scripts": {
     "dev": "vite",

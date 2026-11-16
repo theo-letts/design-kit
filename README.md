@@ -131,23 +131,21 @@ for its own sake rather than as a prerequisite for shipping it.
 
 ### Publishing
 
-Everything is ready except the two things that need your accounts. In order:
-
-```bash
-git remote add origin git@github.com:<you>/design-kit.git
-git push -u origin main
-```
-
-Then replace `REPLACE-ME` in `package.json` and in `scripts/kit.mjs` with your owner
-name, and run `npm run kit` so the published package carries the right repository URL.
-
 `kit/` is committed on purpose, which is unusual for generated output and is what makes
 the registry route work without hosting anything: the files are served straight from the
-repository.
+repository. So the repository _is_ the distribution, and installing anywhere is:
 
 ```
-https://raw.githubusercontent.com/<you>/design-kit/main/kit/registry/green-3.json
+https://raw.githubusercontent.com/theo-letts/design-kit/main/kit/registry/green-3.json
 ```
+
+The raw URL only resolves while the repository is public. Make it private and the
+registry route stops working for everyone, this machine included — `npx shadcn add`
+cannot authenticate, so there is no token to hand it.
+
+npm is the backstop and is not set up: `green-3-design-kit` is named and versioned in
+`kit/package.json`, and `npm run release` would publish it, but nothing depends on that
+yet. Leave it until something does.
 
 Committed output goes stale, so CI regenerates it and fails on a diff.
 
