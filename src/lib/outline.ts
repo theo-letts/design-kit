@@ -184,8 +184,18 @@ export function buttonOutlineCss(name: ButtonOutlineName, scope = ""): string {
       /* Destructive carries its own ink. One ink for every variant means a
          delete button is stamped in the brand colour, which reads as the
          brand endorsing the delete — and on a red fill a green stamp is just
-         a mistake. The variable swaps; the rule above stays as it was. */
-      const danger = '[data-slot="button"][data-variant="destructive"]';
+         a mistake. The variable swaps; the rule above stays as it was.
+
+         It was scoped to the button alone, which made the argument and then
+         declined to apply it: a destructive alert — the thing a status page
+         is actually built out of — kept the sea-green drop against a red
+         edge. Any element that has declared itself destructive gets the
+         matching ink now. data-variant covers button and alert, which carry
+         it already; data-tone is the opt-in for a surface that has no
+         variant of its own, a card being the case that prompted this. The
+         property inherits, so a destructive alert also hands the right ink
+         to anything stamped inside it. */
+      const danger = `[data-variant="destructive"],\n${scope}[data-tone="destructive"]`;
       /* A segmented control is one object, not three. Left to themselves,
          every button in a group casts its own drop — and in a row each
          shadow lands under the next button, so the seams fill with hard

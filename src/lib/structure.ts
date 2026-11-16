@@ -51,12 +51,22 @@ const HEADINGS = ['[data-slot="card-title"]', "h1", "h2", "h3"];
 export function structureCss(scope = ""): string {
   const list = (items: string[]) => items.map((t) => `${scope}${t}`).join(",\n");
 
+  /* border-style is declared, not assumed. Tailwind's preflight sets
+     `border: 0 solid` on every element, so inside a Tailwind build a width
+     on its own is enough and this line changes nothing. Outside one it is
+     the whole rule: border-style initialises to `none`, and a border of
+     `none` draws nothing however wide it is. The offset treatment still
+     paints its drop, so what you got was a hard L sitting beside an edge
+     that was never drawn — on a card, on an alert, on every bordered
+     control. It looked like a bug in the shadow. It was a missing keyword. */
   return `${list(SURFACES)} {
+  border-style: solid;
   border-width: var(--border-width);
   box-shadow: var(--shadow-card);
 }
 
 ${list(BORDERED)} {
+  border-style: solid;
   border-width: var(--border-width);
 }
 

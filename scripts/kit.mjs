@@ -51,6 +51,8 @@ const data = await page.evaluate(async (wanted) => {
   const outline = await import("/src/lib/outline.ts");
   const wording = await import("/src/lib/wording.ts");
   const motion = await import("/src/lib/motion.ts");
+  const structure = await import("/src/lib/structure.ts");
+  const mobile = await import("/src/lib/mobile.ts");
   const kit = kits.kitById(wanted ?? kits.DEFAULT_KIT);
   const c = kit.config;
   const names = [c.fontSans, c.fontHeading, c.fontMono];
@@ -93,12 +95,30 @@ const data = await page.evaluate(async (wanted) => {
   /* The rules the axes generate, unscoped — the same ones toCss emits, plus
      the motion rule, which toCss leaves out when the motion is Smooth
      because that is the app's own default. A package cannot assume the
-     consumer has one, so it always carries it. */
+     consumer has one, so it always carries it.
+
+     This list said "the same ones toCss emits" while leaving out two of
+     them, which made the registry route a quieter copy of the bug the
+     generators were written to kill. The stylesheet carried the preset's
+     structure rules and the mobile rules; the registry item did not, so
+     `npx shadcn add` gave you the variables and the outline treatment and
+     then a 1px stroke whatever the preset said, no shadow ladder, no
+     44px touch targets and no scrolling tab strip. The repository rule is
+     that a component rule lives in a generator so the export carries it;
+     the same rule has to hold one level out, or the export carries it to
+     only one of its three install routes. */
   const rules = [
-    c.outline !== "Default" ? outline.outlineCss(c.outline) : "",
-    c.buttonOutline !== "Default" ? outline.buttonOutlineCss(c.buttonOutline) : "",
     wording.caseCss({ heading: c.headingCase, label: c.labelCase, body: c.bodyCase }),
     wording.headingSizeCss(c.headingSize),
+    /* Structure before outline, and for the reason toCss gives at length:
+       unscoped, the two name the same selectors at the same specificity, so
+       whichever is written later is the one that applies. This list is the
+       same order as toCss on purpose — if it drifts, the registry route and
+       the stylesheet route stop being the same kit. */
+    structure.structureCss(),
+    c.outline !== "Default" ? outline.outlineCss(c.outline) : "",
+    c.buttonOutline !== "Default" ? outline.buttonOutlineCss(c.buttonOutline) : "",
+    mobile.mobileCss(),
     motion.MOTION_RULE,
   ]
     .filter(Boolean)

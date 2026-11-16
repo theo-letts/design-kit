@@ -9,4 +9,4 @@
  *  Bump it when the exported CSS changes meaning — new tokens, different
  *  derivations, rules that behave differently. Not for a new kit preset,
  *  which changes values and not the contract. */
-export const KIT_VERSION = "0.2.0";
+export const KIT_VERSION = "0.2.1";

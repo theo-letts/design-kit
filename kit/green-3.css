@@ -21,7 +21,7 @@
   color-scheme: light;
   /* So a consumer — or an agent reading their stylesheet — can tell which
      build of the kit this is without asking anyone. */
-  --kit-version: "0.2.0";
+  --kit-version: "0.2.1";
   --radius: 0.875rem;
   --spacing: 0.3rem;
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
@@ -44,6 +44,15 @@
   --text-3xl--line-height: 1.2;
   --text-4xl: 2.722rem;
   --text-4xl--line-height: 1.2;
+  --border-width: 1px;
+  --shadow-card: 0 1px 1px 0px oklch(0.18 0.0055 45 / 0.040), 0 2px 2px 0px oklch(0.18 0.0055 45 / 0.020);
+  --shadow-button: none;
+  --tracking-heading: -0.02em;
+  --weight-heading: 400;
+  --elevation-0: none;
+  --elevation-1: 0 1px 1px 0px oklch(0.18 0.0055 45 / 0.040), 0 2px 2px 0px oklch(0.18 0.0055 45 / 0.020);
+  --elevation-2: 0 1px 2px 0px oklch(0.18 0.0055 45 / 0.060), 0 2px 4px 0px oklch(0.18 0.0055 45 / 0.030);
+  --elevation-3: 0 2px 4px 0px oklch(0.18 0.0055 45 / 0.080), 0 4px 9px 0px oklch(0.18 0.0055 45 / 0.040);
   --outline-lit: oklch(1 0 0 / 0.75);
   --outline-shade: oklch(0 0 0 / 0.05);
   --outline-top: oklch(0.7556 0.0095 45 / 0.95);
@@ -96,6 +105,10 @@
 
 .dark {
   color-scheme: dark;
+  --shadow-card: 0 1px 1px 0px oklch(0 0.0006 4.5 / 0.040), 0 2px 2px 0px oklch(0 0.0006 4.5 / 0.020);
+  --elevation-1: 0 1px 1px 0px oklch(0 0.0006 4.5 / 0.040), 0 2px 2px 0px oklch(0 0.0006 4.5 / 0.020);
+  --elevation-2: 0 1px 2px 0px oklch(0 0.0006 4.5 / 0.060), 0 2px 4px 0px oklch(0 0.0006 4.5 / 0.030);
+  --elevation-3: 0 2px 4px 0px oklch(0 0.0006 4.5 / 0.080), 0 4px 9px 0px oklch(0 0.0006 4.5 / 0.040);
   --outline-lit: oklch(1 0 0 / 0.11);
   --outline-shade: oklch(0 0 0 / 0.35);
   --outline-top: oklch(0.4978 0.0082 45 / 0.85);
@@ -146,39 +159,6 @@
   --sidebar-ring: oklch(0.62 0.1056 146.93);
 }
 
-[data-slot="card"],
-[data-slot="alert"],
-[data-slot="item-group"] {
-  border-color: var(--outline-ink);
-  box-shadow: var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink);
-}
-
-:root {
-  --shadow-button: var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink);
-}
-
-[data-slot="button"]:not([data-variant="ghost"]):not([data-variant="link"]) {
-  border: var(--border-width, 1px) solid var(--outline-ink);
-  box-shadow: var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink);
-}
-
-[data-slot="button"][data-variant="destructive"] {
-  --outline-ink: var(--outline-ink-destructive);
-}
-
-[data-slot="button-group"] > [data-slot="button"]:not([data-variant="ghost"]):not([data-variant="link"]) {
-  box-shadow: none;
-}
-
-[data-slot="input-group"] > [data-slot="button"]:not([data-variant="ghost"]):not([data-variant="link"]) {
-  box-shadow: none;
-}
-
-[data-slot="button-group"] {
-  border-radius: calc(var(--radius) - 2px);
-  box-shadow: var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink);
-}
-
 :root,
 * {
   text-transform: lowercase;
@@ -227,6 +207,7 @@ th {
 [data-slot="calendar"],
 [data-slot="item-group"],
 [data-slot="empty"] {
+  border-style: solid;
   border-width: var(--border-width);
   box-shadow: var(--shadow-card);
 }
@@ -240,6 +221,7 @@ th {
 [data-slot="radio-card"],
 [data-slot="toggle-group"],
 [data-slot="button"][data-variant="outline"] {
+  border-style: solid;
   border-width: var(--border-width);
 }
 
@@ -269,6 +251,40 @@ h2,
 h3 {
   letter-spacing: var(--tracking-heading);
   font-weight: var(--weight-heading);
+}
+
+[data-slot="card"],
+[data-slot="alert"],
+[data-slot="item-group"] {
+  border-color: var(--outline-ink);
+  box-shadow: var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink);
+}
+
+:root {
+  --shadow-button: var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink);
+}
+
+[data-slot="button"]:not([data-variant="ghost"]):not([data-variant="link"]) {
+  border: var(--border-width, 1px) solid var(--outline-ink);
+  box-shadow: var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink);
+}
+
+[data-variant="destructive"],
+[data-tone="destructive"] {
+  --outline-ink: var(--outline-ink-destructive);
+}
+
+[data-slot="button-group"] > [data-slot="button"]:not([data-variant="ghost"]):not([data-variant="link"]) {
+  box-shadow: none;
+}
+
+[data-slot="input-group"] > [data-slot="button"]:not([data-variant="ghost"]):not([data-variant="link"]) {
+  box-shadow: none;
+}
+
+[data-slot="button-group"] {
+  border-radius: calc(var(--radius) - 2px);
+  box-shadow: var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink);
 }
 
 @media (pointer: coarse) {

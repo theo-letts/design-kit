@@ -341,8 +341,9 @@ function outlineVars(theme: Theme, mode: "light" | "dark"): Record<string, strin
     "--outline-ink-destructive": offsetInk(colors.destructive, colors.background),
     /* Three times the stroke, so the drop grows with the shape language
        instead of being a fixed number that only suits one style. The fallback
-       carries this style's own width, because the export does not emit
-       --border-width — without it a 2px style would paste as a 3px drop. */
+       carries this style's own width, because the export did not emit
+       --border-width until 0.2.1 — without it a 2px style pasted as a 3px
+       drop. It stays for anyone who lifts the inks without the preset. */
     "--outline-drop": `calc(var(--border-width, ${STYLES[theme.config.style].borderWidth}px) * 3)`,
     "--ring-soft": a(colors.primary, dark ? 0.3 : 0.22),
     "--outline-mark": formatOklch(mix(colors.background, colors.foreground, dark ? 0.58 : 0.45)),
@@ -400,17 +401,34 @@ export function toBackdropSvg(theme: Theme, mode: "light" | "dark"): string | nu
   return duotoneSvg(colors.background, colors.primary);
 }
 
+/** The five variables structureCss() reads. Their own function because two
+ *  callers need exactly this set: the canvas, through styleVars, and toCss.
+ *
+ *  toCss used to write its :root block by hand and left these out, so 0.2.0
+ *  exported the rules and not the values. `border-width: var(--border-width)`
+ *  with nothing defined is not "no border" — it is invalid at computed-value
+ *  time, which resets to the initial value, `medium`: 3px on every card,
+ *  input and outline button. Headings lost their tracking and weight the
+ *  same way. None of it showed here, because the canvas sets all five
+ *  inline. */
+function presetVars(config: Config): Record<string, string> {
+  const s = STYLES[config.style];
+  return {
+    "--border-width": `${s.borderWidth}px`,
+    "--shadow-card": s.shadowCard,
+    "--shadow-button": s.shadowButton,
+    "--tracking-heading": s.tracking,
+    "--weight-heading": String(HEADING_WEIGHTS[config.headingWeight] ?? s.headingWeight),
+  };
+}
+
 /** Shape variables, which are the same in both modes. */
 function styleVars(config: Config): Record<string, string> {
   const s = STYLES[config.style];
   return {
     "--radius": `${effectiveRadius(config)}rem`,
     "--spacing": `${s.spacing}rem`,
-    "--border-width": `${s.borderWidth}px`,
-    "--shadow-card": s.shadowCard,
-    "--shadow-button": s.shadowButton,
-    "--tracking-heading": s.tracking,
-    "--weight-heading": String(HEADING_WEIGHTS[config.headingWeight] ?? s.headingWeight),
+    ...presetVars(config),
     "--font-sans": fontStack(config.fontSans),
     "--font-heading": fontStack(config.fontHeading),
     "--font-mono": MONO_STACKS[config.fontMono],
@@ -543,16 +561,37 @@ export function toCss(theme: Theme): string {
     glass ? GLASS_RULE : "",
     tilt ? tiltRule() : "",
     motion ? MOTION_RULE : "",
-    outline ? outlineCss(c.outline) : "",
-    btnOutline ? buttonOutlineCss(c.buttonOutline) : "",
     caseCss({ heading: c.headingCase, label: c.labelCase, body: c.bodyCase }),
     headingSizeCss(c.headingSize),
     structureCss(),
+    /* The outline axes come after the preset, because they exist to amend
+       it and here the order is all that decides. Unscoped, an outline rule
+       and the structure rule name the same selector at the same
+       specificity, so the later one wins — and with structure last, Offset
+       lost its drop to --shadow-card, Hairline and Double lost their widths
+       to --border-width, and Ring and Lit lost their inset strokes. The
+       canvas never showed it: its outline rules are scoped one attribute
+       deeper (.themed[data-outline]) and win there whatever the order. */
+    outline ? outlineCss(c.outline) : "",
+    btnOutline ? buttonOutlineCss(c.buttonOutline) : "",
     mobileCss(),
   ].filter(Boolean);
 
+  /* The preset's variables, with the elevation ladder laid over the style's
+     own shadows exactly as themeVars does it. */
+  const preset = (mode: "light" | "dark") => ({ ...presetVars(c), ...elevation(theme, mode) });
+  const presetLight = preset("light");
+  /* Dark only says what differs — the ladder is tinted by the page, the
+     rest is shape. Repeating a value there is not free: the Offset button
+     redefines --shadow-button on :root further down, and a .dark block that
+     restated the resting value would take it back wherever .dark sits below
+     the root element. */
+  const presetDark = Object.fromEntries(
+    Object.entries(preset("dark")).filter(([k, v]) => presetLight[k] !== v),
+  );
+
   const layered = (mode: "light" | "dark") => {
-    const vars: Record<string, string> = {};
+    const vars: Record<string, string> = { ...(mode === "light" ? presetLight : presetDark) };
     if (page) Object.assign(vars, layerVars(theme, mode, "page"));
     if (card) Object.assign(vars, layerVars(theme, mode, "card"));
     if (backdrop) Object.assign(vars, backdropVars(theme));

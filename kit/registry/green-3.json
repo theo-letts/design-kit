@@ -4,7 +4,7 @@
   "type": "registry:theme",
   "title": "Green 3",
   "description": "The house kit. Sea green on warm paper, set lower case in Geist Serif.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "registryDependencies": [
     "./green-3-components.json"
   ],
@@ -166,6 +166,42 @@
       "--elevation-2": "0 1px 2px 0px oklch(0 0.0006 4.5 / 0.060), 0 2px 4px 0px oklch(0 0.0006 4.5 / 0.030)",
       "--elevation-3": "0 2px 4px 0px oklch(0 0.0006 4.5 / 0.080), 0 4px 9px 0px oklch(0 0.0006 4.5 / 0.040)"
     },
+    ":root, *": {
+      "text-transform": "lowercase",
+      "font-variant-caps": "normal"
+    },
+    "input, textarea, code, pre, abbr, [data-case=\"keep\"]": {
+      "text-transform": "none",
+      "font-variant-caps": "normal"
+    },
+    "[data-slot=\"card-title\"], h1, h2, h3": {
+      "letter-spacing": "var(--tracking-heading)",
+      "font-weight": "var(--weight-heading)"
+    },
+    "[data-slot=\"label\"], [data-slot=\"badge\"], [data-slot=\"eyebrow\"], [data-slot=\"button\"], th": {
+      "text-transform": "lowercase",
+      "font-variant-caps": "normal"
+    },
+    "[data-slot=\"card-title\"]": {
+      "font-size": "calc(1rem * 1.25)"
+    },
+    "[data-slot=\"card\"], [data-slot=\"alert\"], [data-slot=\"popover-content\"], [data-slot=\"hover-card-content\"], [data-slot=\"context-menu-content\"], [data-slot=\"alert-dialog-content\"], [data-slot=\"sheet-content\"], [data-slot=\"toast\"], [data-slot=\"calendar\"], [data-slot=\"item-group\"], [data-slot=\"empty\"]": {
+      "border-style": "solid",
+      "border-width": "var(--border-width)",
+      "box-shadow": "var(--shadow-card)"
+    },
+    "[data-slot=\"input\"], [data-slot=\"textarea\"], [data-slot=\"select\"], [data-slot=\"input-group\"], [data-slot=\"input-otp-slot\"], [data-slot=\"combobox-trigger\"], [data-slot=\"radio-card\"], [data-slot=\"toggle-group\"], [data-slot=\"button\"][data-variant=\"outline\"]": {
+      "border-style": "solid",
+      "border-width": "var(--border-width)"
+    },
+    "[data-slot=\"input-group\"] > input, [data-slot=\"input-group\"] > [data-slot=\"input\"], [data-slot=\"input-group\"] > textarea": {
+      "border-width": "0",
+      "border-radius": "0",
+      "box-shadow": "none"
+    },
+    "[data-slot=\"button\"][data-variant=\"default\"], [data-slot=\"button\"][data-variant=\"secondary\"], [data-slot=\"button\"][data-variant=\"destructive\"]": {
+      "box-shadow": "var(--shadow-button)"
+    },
     "[data-slot=\"card\"], [data-slot=\"alert\"], [data-slot=\"item-group\"]": {
       "border-color": "var(--outline-ink)",
       "box-shadow": "var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink)"
@@ -174,7 +210,7 @@
       "border": "var(--border-width, 1px) solid var(--outline-ink)",
       "box-shadow": "var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink)"
     },
-    "[data-slot=\"button\"][data-variant=\"destructive\"]": {
+    "[data-variant=\"destructive\"], [data-tone=\"destructive\"]": {
       "--outline-ink": "var(--outline-ink-destructive)"
     },
     "[data-slot=\"button-group\"] > [data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"])": {
@@ -187,24 +223,44 @@
       "border-radius": "calc(var(--radius) - 2px)",
       "box-shadow": "var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink)"
     },
-    ":root, *": {
-      "text-transform": "lowercase",
-      "font-variant-caps": "normal"
+    "@media (pointer: coarse)": {
+      "[data-slot=\"button\"], [data-slot=\"toggle\"], [data-slot=\"checkbox\"], [data-slot=\"radio-group-item\"], [data-slot=\"switch\"], [data-slot=\"menu-item\"], [data-slot=\"input-otp-slot\"], [role=\"tab\"]": {
+        "position": "relative"
+      },
+      "[data-slot=\"button\"]::after, [data-slot=\"toggle\"]::after, [data-slot=\"checkbox\"]::after, [data-slot=\"radio-group-item\"]::after, [data-slot=\"switch\"]::after, [data-slot=\"menu-item\"]::after, [data-slot=\"input-otp-slot\"]::after, [role=\"tab\"]::after": {
+        "content": "\"\"",
+        "position": "absolute",
+        "top": "50%",
+        "left": "50%",
+        "translate": "-50% -50%",
+        "min-width": "44px",
+        "min-height": "44px",
+        "pointer-events": "none"
+      }
     },
-    "input, textarea, code, pre, abbr, [data-case=\"keep\"]": {
-      "text-transform": "none",
-      "font-variant-caps": "normal"
+    "[data-slot=\"tabs-list\"], [data-slot=\"button-group\"], [data-slot=\"toggle-group\"], [data-slot=\"pagination\"]": {
+      "max-width": "100%",
+      "overflow-x": "auto",
+      "scrollbar-width": "none"
     },
-    "[data-slot=\"card-title\"], h1, h2, h3": {
-      "text-transform": "lowercase",
-      "font-variant-caps": "normal"
+    "[data-slot=\"tabs-list\"]::-webkit-scrollbar, [data-slot=\"button-group\"]::-webkit-scrollbar, [data-slot=\"toggle-group\"]::-webkit-scrollbar, [data-slot=\"pagination\"]::-webkit-scrollbar": {
+      "display": "none"
     },
-    "[data-slot=\"label\"], [data-slot=\"badge\"], [data-slot=\"eyebrow\"], [data-slot=\"button\"], th": {
-      "text-transform": "lowercase",
-      "font-variant-caps": "normal"
+    "code, [data-slot=\"kbd\"]": {
+      "overflow-wrap": "anywhere"
     },
-    "[data-slot=\"card-title\"]": {
-      "font-size": "calc(1rem * 1.25)"
+    "[data-slot=\"table-scroll\"]": {
+      "width": "100%",
+      "overflow-x": "auto"
+    },
+    "@media (max-width: 640px)": {
+      "[data-slot=\"alert-dialog-content\"], [data-slot=\"dialog-content\"]": {
+        "max-width": "100%",
+        "width": "100%",
+        "margin-top": "auto",
+        "border-bottom-left-radius": "0",
+        "border-bottom-right-radius": "0"
+      }
     },
     "[class*=\"transition\"], [data-slot]": {
       "transition-duration": "var(--motion-duration)",

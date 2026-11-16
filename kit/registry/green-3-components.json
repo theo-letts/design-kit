@@ -4,7 +4,7 @@
   "type": "registry:ui",
   "title": "Green 3 components",
   "description": "The primitives this kit is drawn against: shadcn-shaped, hand-rolled, no Radix.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "dependencies": [
     "clsx",
     "tailwind-merge",
