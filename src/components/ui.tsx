@@ -128,8 +128,16 @@ export const CardDescription = ({ className, ...p }: React.ComponentProps<"div">
 export const CardContent = ({ className, ...p }: React.ComponentProps<"div">) => (
   <div data-slot="card-content" className={cn("px-6", className)} {...p} />
 );
+/* The gap is a deviation from shadcn, which ships this row with none and
+   expects you to add one. Flat buttons touching look tight; stamped ones
+   look broken. Every button here casts a 3px hard drop to its right, so at
+   zero gap the first one's drop is painted underneath the second and the two
+   strokes merge into a single dark seam — the identical failure the Offset
+   treatment already names and fixes for button groups, arriving by the other
+   door because a footer is a row of buttons that nobody wrapped in a group.
+   A theme that makes zero gap wrong is a theme that has to supply one. */
 export const CardFooter = ({ className, ...p }: React.ComponentProps<"div">) => (
-  <div data-slot="card-footer" className={cn("flex items-center px-6", className)} {...p} />
+  <div data-slot="card-footer" className={cn("flex items-center gap-2 px-6", className)} {...p} />
 );
 
 /* ----------------------------------------------------------------- Input */
