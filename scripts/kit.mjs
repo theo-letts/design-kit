@@ -278,6 +278,12 @@ const darkBlock = { ...dashed(darkOnly), ...darkFromRules };
 
 /* ------------------------------------------------- the registry item */
 
+/* Where the registry items are served from. One constant, because the
+   repository URL below is built from it too and the two drifting apart is
+   not a thing you would notice from in here. */
+const OWNER = "theo-letts";
+const RAW_BASE = `https://raw.githubusercontent.com/${OWNER}/design-kit/main/kit/registry`;
+
 mkdirSync(join(OUT, "registry"), { recursive: true });
 
 const item = {
@@ -287,7 +293,14 @@ const item = {
   title: data.name,
   description: data.note,
   version: data.version,
-  registryDependencies: [`./${data.id}-components.json`],
+  /* An absolute URL, not `./green-3-components.json`. shadcn resolves a
+     relative dependency against the consumer's working directory rather
+     than against the item's own URL, so the relative form made the whole
+     install fail at the first step — "Failed to read local registry file"
+     in a project that had never heard of the file. It only shows up when
+     the item is fetched over HTTP, which is the only way anyone but me
+     installs it. */
+  registryDependencies: [`${RAW_BASE}/${data.id}-components.json`],
   cssVars: data.vars,
   /* Everything the kit invented for its own rules — stroke widths, shadow
      ladders, the motion pair, the Offset inks — belongs on :root rather than
@@ -375,7 +388,7 @@ const pkg = {
   /* The fonts are not MIT and their licences travel beside them in fonts/.
      A package that claims one licence for everything inside it is wrong in
      the way that matters. */
-  repository: { type: "git", url: "git+https://github.com/theo-letts/design-kit.git" },
+  repository: { type: "git", url: `git+https://github.com/${OWNER}/design-kit.git` },
   /* No main and no types: this ships CSS and font files, and a package that
      claims a JS entry point it does not have breaks bundlers that believe
      it. Everything is reached through exports by its own name. */

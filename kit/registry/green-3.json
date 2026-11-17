@@ -6,7 +6,7 @@
   "description": "The house kit. Sea green on warm paper, set lower case in Geist Serif.",
   "version": "0.2.1",
   "registryDependencies": [
-    "./green-3-components.json"
+    "https://raw.githubusercontent.com/theo-letts/design-kit/main/kit/registry/green-3-components.json"
   ],
   "cssVars": {
     "theme": {
