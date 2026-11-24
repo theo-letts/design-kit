@@ -46,6 +46,34 @@ describe("outline", () => {
     expect(grouped).toContain(':not([data-variant="ghost"])');
   });
 
+  it("presses a stroked button into its own drop", () => {
+    const css = buttonOutlineCss("Offset");
+    expect(css).toContain(
+      '[data-slot="button"]:not([data-variant="ghost"]):not([data-variant="link"]):active {\n' +
+        "  translate: var(--outline-drop) var(--outline-drop);\n  box-shadow: none;\n}",
+    );
+  });
+
+  it("retimes the press without dropping the button's other transitions", () => {
+    /* Unlayered, a bare `transition: translate 80ms` beats transition-all
+       and every colour change on the button stops animating. */
+    const css = buttonOutlineCss("Offset");
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: no-preference\) \{\n[^{]+\{\n {2}transition-property: all, translate, box-shadow;/,
+    );
+    expect(css).not.toMatch(/^\s*transition:/m);
+  });
+
+  it("holds a joined button still when it is pressed", () => {
+    /* Moved, a segment slides over its neighbour and opens the seam. */
+    const css = buttonOutlineCss("Offset");
+    for (const group of ["button-group", "input-group"]) {
+      expect(css).toContain(
+        `[data-slot="${group}"] > [data-slot="button"]:not([data-variant="ghost"]):not([data-variant="link"]):active {\n  translate: none;\n}`,
+      );
+    }
+  });
+
   it("writes nothing for Default", () => {
     expect(outlineCss("Default")).toBe("");
     expect(buttonOutlineCss("Default")).toBe("");

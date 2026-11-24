@@ -8,6 +8,20 @@ not earn a bump.
 The source of truth is `src/lib/version.ts`. `npm run kit` stamps it into the
 package, both registry items, and the stylesheet as `--kit-version`.
 
+## 0.2.2
+
+- **Added** a pressed state to the Offset button. While a stroked button —
+  every variant but `ghost` and `link` — is held, it moves down and right by
+  `--outline-drop` and its drop goes, so it sinks into its own stamp. It uses
+  `translate`, so it composes with any `transform` a project sets on press.
+- **Added** an 80ms transition on that press. The button's other transitions
+  keep their own timing: the rule lists `all` first and re-times only
+  `translate` and `box-shadow` after it. It is off under reduced motion, where
+  the press lands without travelling.
+- Buttons joined into a `button-group` or `input-group` do not move when
+  pressed. The group owns the drop, and a segment that moved would slide over
+  its neighbour and open the seam.
+
 ## 0.2.1
 
 **The stylesheet now works on its own.** 0.2.0 shipped the preset's rules and

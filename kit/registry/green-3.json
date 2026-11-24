@@ -4,7 +4,7 @@
   "type": "registry:theme",
   "title": "Green 3",
   "description": "The house kit. Sea green on warm paper, set lower case in Geist Serif.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "registryDependencies": [
     "https://raw.githubusercontent.com/theo-letts/design-kit/main/kit/registry/green-3-components.json"
   ],
@@ -210,14 +210,30 @@
       "border": "var(--border-width, 1px) solid var(--outline-ink)",
       "box-shadow": "var(--outline-drop) var(--outline-drop) 0 0 var(--outline-ink)"
     },
+    "[data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"]):active": {
+      "translate": "var(--outline-drop) var(--outline-drop)",
+      "box-shadow": "none"
+    },
+    "@media (prefers-reduced-motion: no-preference)": {
+      "[data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"])": {
+        "transition-property": "all, translate, box-shadow",
+        "transition-duration": "var(--motion-duration, 150ms), 80ms, 80ms"
+      }
+    },
     "[data-variant=\"destructive\"], [data-tone=\"destructive\"]": {
       "--outline-ink": "var(--outline-ink-destructive)"
     },
     "[data-slot=\"button-group\"] > [data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"])": {
       "box-shadow": "none"
     },
+    "[data-slot=\"button-group\"] > [data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"]):active": {
+      "translate": "none"
+    },
     "[data-slot=\"input-group\"] > [data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"])": {
       "box-shadow": "none"
+    },
+    "[data-slot=\"input-group\"] > [data-slot=\"button\"]:not([data-variant=\"ghost\"]):not([data-variant=\"link\"]):active": {
+      "translate": "none"
     },
     "[data-slot=\"button-group\"]": {
       "border-radius": "calc(var(--radius) - 2px)",

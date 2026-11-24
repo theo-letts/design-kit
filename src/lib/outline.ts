@@ -212,6 +212,30 @@ export function buttonOutlineCss(name: ButtonOutlineName, scope = ""): string {
             `  box-shadow: ${drop};`,
         ) +
         "\n\n" +
+        /* Pressed, the button sinks into its own stamp: it travels the
+           length of the drop and the drop goes, so the face lands where the
+           shadow was. It is `translate` and not `transform` because the
+           interaction axis owns transform on :active — the two properties
+           compose, where a second transform would erase the first. */
+        rule(
+          `${BTN}:active`,
+          "  translate: var(--outline-drop) var(--outline-drop);\n  box-shadow: none;",
+        ) +
+        "\n\n" +
+        /* The press is quicker than anything else the button does, so it is
+           retimed alone. `all` comes first and the two properties again
+           after it, because the last entry naming a property wins: that
+           keeps the colour transitions the button already declares. A plain
+           `transition: translate 80ms` would drop them, since this sheet is
+           unlayered and beats the transition-all utility outright. Under
+           reduced motion the rule is absent and the press simply lands. */
+        "@media (prefers-reduced-motion: no-preference) {\n" +
+        rule(
+          BTN,
+          "  transition-property: all, translate, box-shadow;\n" +
+            "  transition-duration: var(--motion-duration, 150ms), 80ms, 80ms;",
+        ) +
+        "\n}\n\n" +
         rule(danger, "  --outline-ink: var(--outline-ink-destructive);") +
         "\n\n" +
         joined
@@ -219,7 +243,17 @@ export function buttonOutlineCss(name: ButtonOutlineName, scope = ""): string {
              without them this selector is one attribute lighter and loses to
              it — and a rule that loses silently looks exactly like a rule
              that was never written. */
-          .map((g) => rule(`${g} > ${BTN}`, "  box-shadow: none;"))
+          .map(
+            (g) =>
+              rule(`${g} > ${BTN}`, "  box-shadow: none;") +
+              "\n\n" +
+              /* Nor does a joined button press. It has no drop of its own to
+                 sink into, and moved anyway it slides across its neighbour's
+                 stroke and opens a gap in the seam the group is welded by.
+                 :active makes this one heavier than the press rule, so it
+                 wins whichever is written first. */
+              rule(`${g} > ${BTN}:active`, "  translate: none;"),
+          )
           .join("\n\n") +
         "\n\n" +
         rule(
